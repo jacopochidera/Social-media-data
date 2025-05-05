@@ -1,13 +1,18 @@
-from typing import List
-import random
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
 
-def analyze_sentiment(content: str) -> str:
-    # A mock function to simulate sentiment analysis
-    sentiments = ["positive", "negative", "neutral"]
-    return random.choice(sentiments)
 
-def extract_keywords(content: str) -> List[str]:
-    # A mock function to simulate keyword extraction
-    words = content.split()
-    keywords = list(set(words))  # Unique words as keywords
-    return keywords
+
+# Ensure you run nltk.download('vader_lexicon') before using VADER
+
+nltk.download("vader_lexicon")
+sia = SentimentIntensityAnalyzer()
+
+def analyze_sentiment(content: str):
+    sentiment_scores = sia.polarity_scores(content)
+    if sentiment_scores['compound'] >= 0.05:
+        return "positive"
+    elif sentiment_scores['compound'] <= -0.05:
+        return "negative"
+    else:
+        return "neutral"
